@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { useHistory } from "react-router";
 const CreateUser = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [title, setTitle] = useState("");
   const [email, setEmail] = useState("");
-
+  let history = useHistory();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -38,16 +39,8 @@ const CreateUser = () => {
         .catch((err) => {
           console.log(err);
         });
+      history.goBack();
     }
-
-    axios
-      .get("https://dummyapi.io/data/v1/user/")
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
   return (
     <div>
