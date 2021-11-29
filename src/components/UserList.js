@@ -51,7 +51,7 @@ class UserList extends Component {
       .get("https://dummyapi.io/data/v1/user/")
       .then((response) => {
         console.log(response.data);
-        this.setState({ userData: response.data.data });
+        this.setState({ userData: response.data.data, loading: false });
       })
       .catch((err) => {
         console.log(err);
@@ -63,14 +63,16 @@ class UserList extends Component {
     console.log("reredndered");
   }
 
-  handleDeleteUser = (e, id) => {
+  handleDeleteUser = async (e, id) => {
+    this.setState({ loading: true });
     e.preventDefault();
-    axios
+    await axios
       .delete(`https://dummyapi.io/data/v1/user/${id}`)
       .then((response) => {
         this.setState({
           userData: this.state.userData.filter((item) => {
             console.log(item.id, response.data);
+            this.setState({ loading: false });
             return item.id !== response.data.id;
           }),
         });
@@ -89,6 +91,7 @@ class UserList extends Component {
 
   handleUpdateUser = async (id, userData) => {
     console.log(id);
+    this.setState({ loading: true });
     this.handleClose();
     await axios
       .put(`https://dummyapi.io/data/v1/user/${id}`, userData)
@@ -130,42 +133,72 @@ class UserList extends Component {
                   <TableCell align="left">Edit</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {this.state.userData.map((item) => (
-                  <TableRow
-                    key={item.id}
-                    onClick={() => this.showUserProfile(item)}
-                  >
-                    <TableCell align="left">{item.title}</TableCell>
-                    <TableCell align="left">{item.firstName}</TableCell>
-                    <TableCell align="left">{item.lastName}</TableCell>
 
-                    <TableCell align="left">
-                      <Avatar alt="Travis Howard" src={item.picture} />
-                    </TableCell>
-                    <TableCell align="left">
-                      {" "}
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        onClick={() => this.handleDeleteUser(item.id)}
+              {this.state.loading ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <TableBody>
+                  {this.state.userData.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell
+                        align="left"
+                        onClick={(e) => this.showUserProfile(e, item)}
                       >
-                        delete
-                      </Button>
-                    </TableCell>
-                    <TableCell align="left">
-                      {" "}
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        onClick={() => this.handleEditUser(item)}
+                        {item.title}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        onClick={(e) => this.showUserProfile(e, item)}
                       >
-                        edit
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+                        {item.firstName}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        onClick={(e) => this.showUserProfile(e, item)}
+                      >
+                        {item.lastName}
+                      </TableCell>
+
+                      <TableCell
+                        align="left"
+                        onClick={(e) => this.showUserProfile(e, item)}
+                      >
+                        <Avatar alt="Travis Howard" src={item.picture} />
+                      </TableCell>
+                      <TableCell align="left">
+                        {" "}
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          onClick={(event) =>
+                            this.handleDeleteUser(event, item.id)
+                          }
+                        >
+                          delete
+                        </Button>
+                      </TableCell>
+                      <TableCell align="left">
+                        {" "}
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          onClick={(e) => this.handleEditUser(e, item)}
+                        >
+                          edit
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         )}

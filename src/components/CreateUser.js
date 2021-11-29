@@ -8,23 +8,40 @@ const CreateUser = () => {
   const [title, setTitle] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let newObj = {
-      id: Math.floor(Math.random() * 1 + 3000),
-      firstName,
-      lastName,
-      title,
-      email,
-    };
+    if (
+      (firstName === "") &
+      (lastName === "") &
+      (title === "") &
+      (email === "")
+    ) {
+      alert("enter all the feilds");
+    } else {
+      let newObj = {
+        firstName,
+        lastName,
+        title,
+        email,
+      };
+
+      await axios
+        .post("https://dummyapi.io/data/v1/user/create", newObj, {
+          headers: {
+            "app-id": "61a1becd66a54517fcd859e3",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     axios
-      .post("https://dummyapi.io/data/v1/user/create", newObj, {
-        headers: {
-          "app-id": "61a1becd66a54517fcd859e3",
-        },
-      })
+      .get("https://dummyapi.io/data/v1/user/")
       .then((response) => {
         console.log(response.data);
       })
