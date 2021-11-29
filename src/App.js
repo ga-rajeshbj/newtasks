@@ -1,23 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import LandingPage from "./components/LandingPage";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from "react-router-dom";
+
+import PotectedRouter from "./components/PotectedRouter";
+import UserList from "./components/UserList";
+import { useState } from "react";
+import CreateUser from "./components/CreateUser";
 
 function App() {
+  const [auth, setAuth] = useState(false);
+
+  const handleRouterUserList = () => {
+    setAuth(true);
+    console.log("rajesh");
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <LandingPage handleSubmitRoute={handleRouterUserList} />
+            )}
+          />
+
+          <PotectedRouter
+            exact
+            path="/userlist"
+            component={UserList}
+            isAuth={auth}
+          />
+          <Route exact path="/createUser" render={() => <CreateUser />} />
+        </Switch>
+      </Router>
     </div>
   );
 }
