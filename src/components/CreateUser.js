@@ -8,7 +8,21 @@ const CreateUser = () => {
   const [lastName, setLastName] = useState("");
   const [title, setTitle] = useState("");
   const [email, setEmail] = useState("");
+  const [picture, setPicture] = useState("");
+
   let history = useHistory();
+
+  const handleChanePicture = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setPicture(reader.result);
+      }
+
+      reader.readAsDataURL(e.target.files[0]);
+    };
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,14 +39,11 @@ const CreateUser = () => {
         lastName,
         title,
         email,
+        picture,
       };
 
       await axios
-        .post("https://dummyapi.io/data/v1/user/create", newObj, {
-          headers: {
-            "app-id": "61a1becd66a54517fcd859e3",
-          },
-        })
+        .post("https://dummyapi.io/data/v1/user/create", newObj)
         .then((response) => {
           console.log(response.data);
         })
@@ -44,7 +55,7 @@ const CreateUser = () => {
   };
   return (
     <div>
-      <h1>Edit User</h1>
+      <h1>Add User</h1>
       <form onSubmit={handleSubmit}>
         <div className="my-3">
           <TextField
@@ -87,7 +98,22 @@ const CreateUser = () => {
           />
         </div>
         <div>
-          <Button type="submit" variant="contained">
+          <label htmlFor="picture-file">
+            <Button variant="contained" component="span">
+              <input
+                accept="image/*"
+                id="picture-file"
+                variant="outlined"
+                name="picture"
+                type="file"
+                size="small"
+                onChange={(e) => handleChanePicture(e)}
+              />
+            </Button>
+          </label>
+        </div>
+        <div>
+          <Button type="submit" variant="contained" className="my-2">
             submit
           </Button>
         </div>

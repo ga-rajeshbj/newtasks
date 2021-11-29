@@ -69,13 +69,7 @@ class UserList extends Component {
     await axios
       .delete(`https://dummyapi.io/data/v1/user/${id}`)
       .then((response) => {
-        this.setState({
-          userData: this.state.userData.filter((item) => {
-            console.log(item.id, response.data);
-            this.setState({ loading: false });
-            return item.id !== response.data.id;
-          }),
-        });
+        this.fetchData();
       })
       .catch((err) => {
         console.log(err);
