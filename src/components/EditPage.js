@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import axios from "axios";
 
 const EditPage = ({ userObj, updateData }) => {
   const [firstName, setFirstName] = useState(userObj.firstName);

@@ -1,12 +1,12 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const PotectedRouter = ({ isAuth: isAuth, component: Component, ...rest }) => {
+const PotectedRouter = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isAuth) {
+        if (localStorage.getItem("token") === "true") {
           return <Component />;
         } else {
           return (

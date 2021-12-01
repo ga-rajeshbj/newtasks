@@ -13,7 +13,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import EditPage from "./EditPage";
 import UserProfile from "./UserProfile";
@@ -115,7 +114,7 @@ class UserList extends Component {
             <CircularProgress />
           </Box>
         ) : (
-          <TableContainer component={Paper}>
+          <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -128,17 +127,7 @@ class UserList extends Component {
                 </TableRow>
               </TableHead>
 
-              {this.state.loading ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "center",
-                  }}
-                >
-                  <CircularProgress />
-                </Box>
-              ) : (
+              {this.state.loading ? null : (
                 <TableBody>
                   {this.state.userData.map((item) => (
                     <TableRow key={item.id}>

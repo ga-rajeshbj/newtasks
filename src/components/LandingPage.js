@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+
 import { useHistory } from "react-router-dom";
 import Box from "@mui/material/Box";
 const LandingPage = (props) => {
@@ -12,7 +12,8 @@ const LandingPage = (props) => {
     e.preventDefault();
     if (userName === "admin" && password === "admin") {
       console.log("sucess");
-      props.handleSubmitRoute();
+      localStorage.setItem("token", "true");
+
       history.push("/userlist");
     } else {
       alert("Enter the correct username and password");
@@ -35,7 +36,6 @@ const LandingPage = (props) => {
               <TextField
                 type="text"
                 id="username"
-                label="Standard"
                 variant="standard"
                 onChange={handleUserNameChange}
                 value={userName}
@@ -46,7 +46,6 @@ const LandingPage = (props) => {
               <TextField
                 type="password"
                 id="password"
-                label="Standard"
                 variant="standard"
                 onChange={handlePasswordChange}
                 value={password}
